@@ -1,0 +1,31 @@
+import logging
+from logs.setup_logs import init_logs
+from readers.file_reader import FileReader
+
+logger = init_logs(__name__)
+
+
+def calculate_fuel(mass):
+    """
+    :param mass: Assumes this is a string from being read from the file
+    :return: calculated value
+    """
+    return (int(mass)//3)-2
+
+
+def calculate_fuel_for_fuel(mass, total=0):
+    mass = int(mass)
+    needed_fuel = calculate_fuel(mass)
+    if needed_fuel <= 0:
+        return total
+    return calculate_fuel_for_fuel(needed_fuel, total+needed_fuel)
+
+
+given_masses = FileReader.read_input_as_list()
+total_fuel = sum(map(calculate_fuel, given_masses))
+
+logging.info("Calculated total fuel from %s modules to be: %s", len(given_masses), total_fuel)
+
+total_fuel_for_fuel = sum(map(calculate_fuel_for_fuel, given_masses))
+
+logging.info("Calculated total fuel for fuel from %s modules to be: %s", len(given_masses), total_fuel_for_fuel)
