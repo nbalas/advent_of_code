@@ -13,3 +13,13 @@ class FileReader:
         logging.info("Opening file %s", filename)
         with open(filename, 'r') as file:
             return file.readlines()
+
+    @staticmethod
+    def read_input_as_string(filename=DEFAULT_FILE_NAME):
+        """
+        This method assumes we are reading from the working directory, will return a string of the file
+        :param filename: relative path to file
+        """
+        logging.info("Opening file %s", filename)
+        with open(filename, 'r') as file:
+            return file.read()
