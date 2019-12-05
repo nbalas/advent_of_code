@@ -11,6 +11,10 @@ ADD = 1
 MULT = 2
 SAVE = 3 # Input value to provided register
 OUTPUT = 4 # Output given value
+JUMP_TRUE = 5 # Jump if true
+JUMP_FALSE = 6 # Jump if false
+LESS_THAN = 7 # Less than
+EQUALS = 8 # equals
 
 
 def resolve_value(reference, mode, register):
@@ -54,21 +58,36 @@ def parse_instruction(raw_instruction):
 
 def handle_opt_code(position, register):
     instruction = parse_instruction(register[position])
-    if instruction[0] == HALT:
-        logging.info("Final value for position 0 is: %s", register[0])
+    opt_code = instruction[0]
+    modes = instruction[1:]
+    if opt_code == HALT:
         return -1
-    elif instruction[0] == ADD:
-        three_param_operate(operator.add, position, instruction[1:], register)
+    elif opt_code == ADD:
+        three_param_operate(operator.add, position, modes, register)
         return position + 4
-    elif instruction[0] == MULT:
-        three_param_operate(operator.mul, position, instruction[1:], register)
+    elif opt_code == MULT:
+        three_param_operate(operator.mul, position, modes, register)
         return position + 4
-    elif instruction[0] == SAVE:
+    elif opt_code == SAVE:
         register[register[position + 1]] = input_value
         return position + 2
-    elif instruction[0] == OUTPUT:
-        print(f"Optcode output: {resolve_value(position + 1, instruction[1], register)}")
+    elif opt_code == OUTPUT:
+        print(f"Optcode output: {resolve_value(position + 1, modes[0], register)}")
         return position + 2
+    elif opt_code == JUMP_TRUE:
+        if resolve_value(position + 1, modes[0], register) != 0:
+            return resolve_value(position + 2, modes[1], register)
+        return position + 3
+    elif opt_code == JUMP_FALSE:
+        if resolve_value(position + 1, modes[0], register) == 0:
+            return resolve_value(position + 2, modes[1], register)
+        return position + 3
+    elif opt_code == LESS_THAN:
+        register[register[position + 3]] = 1 if resolve_value(position + 1, modes[0], register) < resolve_value(position + 2, modes[1], register) else 0
+        return position + 4
+    elif opt_code == EQUALS:
+        register[register[position + 3]] = 1 if resolve_value(position + 1, modes[0], register) == resolve_value(position + 2, modes[1], register) else 0
+        return position + 4
     raise Exception(f"Invalid code! {instruction[0]}")
 
 
@@ -82,6 +101,6 @@ def run_program(register):
 
 int_register = list(map(int, FileReader.read_input_as_string().rstrip().split(',')))
 
-input_value = 1
+input_value = 5
 
 run_program(int_register)
