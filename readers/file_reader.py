@@ -12,7 +12,7 @@ class FileReader:
         """
         logging.info("Opening file %s", filename)
         with open(filename, 'r') as file:
-            return file.readlines()
+            return set(map(str.strip, file.readlines()))
 
     @staticmethod
     def read_input_as_string(filename=DEFAULT_FILE_NAME):
