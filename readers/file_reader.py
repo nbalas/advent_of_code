@@ -1,5 +1,6 @@
 import logging
 
+
 class FileReader:
 
     DEFAULT_FILE_NAME = "input.txt"
