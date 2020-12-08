@@ -1,6 +1,4 @@
-from math import prod
 from collections import namedtuple
-from operator import attrgetter
 from logs.setup_logs import init_logs
 from readers.file_reader import FileReader
 
