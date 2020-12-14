@@ -1,6 +1,5 @@
-from collections import namedtuple, defaultdict
+from collections import namedtuple
 from copy import deepcopy
-from itertools import permutations
 
 from logs.setup_logs import init_logs
 from readers.file_reader import FileReader
