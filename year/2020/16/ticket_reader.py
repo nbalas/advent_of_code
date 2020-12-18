@@ -1,6 +1,4 @@
-from re import search
 from collections import namedtuple, defaultdict
-from operator import methodcaller
 from logs.setup_logs import init_logs
 from readers.file_reader import FileReader
 
@@ -22,6 +20,7 @@ def main():
     logger.info(f"Part 2 product: {final_product}")
 
 
+# Part 2
 def decrypt_ticket(rules, tickets):
     decrypted_rules = defaultdict(list)
     for i in range(0, len(rules)):
