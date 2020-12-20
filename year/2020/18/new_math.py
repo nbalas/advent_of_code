@@ -1,8 +1,6 @@
-from collections import namedtuple
 from logs.setup_logs import init_logs
-from itertools import repeat
 from readers.file_reader import FileReader
-from queue import LifoQueue, Queue
+from queue import LifoQueue
 from copy import copy
 
 logger = init_logs(__name__)
